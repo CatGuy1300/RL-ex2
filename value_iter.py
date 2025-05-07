@@ -88,10 +88,8 @@ def value_iteration(mdp, gamma, nIt):
         for state in range(mdp.nS):
             action_values = np.zeros(mdp.nA)
             for action in range(mdp.nA):
-                sum = 0
                 for pr, next_state, reward in mdp.P[state][action]:
-                    sum += pr * (reward + gamma * Vprev[next_state])
-                action_values[action] = sum
+                    action_values[action] += pr * (reward + gamma * Vprev[next_state])
             best_action = np.argmax(action_values)
             V[state] = action_values[best_action]
             pi[state] = best_action

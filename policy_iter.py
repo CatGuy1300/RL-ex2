@@ -60,17 +60,11 @@ print("")
 def compute_vpi(pi, mdp, gamma):
     # use pi[state] to access the action that's prescribed by this policy
     P = np.zeros((mdp.nS, mdp.nS))
-    for s in range(mdp.nS):
-        for s_ in range(mdp.nS):
-            for pr, next_state, reward in mdp.P[s][pi[s]]:
-                if next_state == s_:
-                    P[s, s_] += pr
     r = np.zeros(mdp.nS)
     for s in range(mdp.nS):
-        sum = 0
         for pr, next_state, reward in mdp.P[s][pi[s]]:
-            sum += pr * reward
-        r[s] = sum
+            P[s, next_state] += pr
+            r[s] += pr * reward
     V = np.linalg.solve(np.identity(mdp.nS) - gamma * P, r)
     return V
 
